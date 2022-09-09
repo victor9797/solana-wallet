@@ -1,8 +1,9 @@
-const { Router } = require('express')
-const router = Router()
+const { Router } = require("express");
+const router = Router();
+const WalletController = require("../../controllers/WalletController");
 
-router.get('/', function(req, res) {
-    res.json({ message: 'Wallet endpoint'})
-})
+router.get("/", async function (req, res) {
+  await WalletController.fetch(req, res);
+});
 
-module.exports = router
+module.exports = router;
