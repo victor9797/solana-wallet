@@ -2,15 +2,28 @@ const { PublicKey } = require("@solana/web3.js");
 const MetaplexConnector = require("../utils/MetaplexConnector");
 require("dotenv").config();
 
+let response = {
+  status: "success",
+  code: 200,
+  data: [],
+  message: null,
+};
+
 const WalletController = {
   fetch: async function (req, res) {
-    const mintAddress = new PublicKey(process.env.PUBLIC_KEY);
-    const task = MetaplexConnector.nfts().findByMint({ mintAddress });
-    const nft = await task.run();
+    const key = new PublicKey(process.env.PUBLIC_KEY);
+    const list = await MetaplexConnector.nfts()
+      .findAllByOwner({ owner: key })
+      .run();
 
-    console.log(nft);
+    response = {
+      status: "success",
+      code: 200,
+      data: list,
+      message: null,
+    };
 
-    res.json({ data: nft });
+    res.send(response);
   },
 };
 
